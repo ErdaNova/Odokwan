@@ -5,59 +5,86 @@ import 'react-native-gesture-handler';
 
 
 const BookInfoScreen = ({navigation}) => {
-    return (
-        <View>
-            <Text style={{ fontSize: 10, color: "black" }}> //!!what text??
-                Add book directly:
-            </Text>
-        </View>
-    )
-
     const [form, setForm] = useState({
-        title = '',
-        author = '',
-        page = '',
-        isbn = '',
-        image = '',
+        title : '',
+        author : '',
+        page_number : '',
+        isbn : '',
+        image : {
+          uri: require("./img/harrypotter_1.jpg"), /* change to default */
+          type: 'image/jpeg',
+          name: 'default_cover.jpg',
+        },
+        status: 0,
     });
 
-    const onChangeText = (item: string) => (value: string) {
+    const onChangeText = (item: string) => (value: string) => {
         setForm({
-            ..form,
-            [item]: string
-        })
-    }
+            ...form,
+            [item]: value
+        });
+    };
+
+    const uploadImage = () => {
+        ImagePicker.launchImageLibrary({}, response => {
+          if (response.didCancel) {
+            return;
+          }
+
+          const inputImage = {
+            uri: response.assets[0].uri,
+            type: response.assets[0].type,
+            name: response.assets[0].name,
+          };
+
+          setForm({
+            ...form,
+            image : inputImage
+          });
+        });
+    };
+
+    const onSubmit = (form) => {
+      console.log(form);
+    };
+
+    /* notes:
+     * check if page_number needs to be numeric
+     */
 
     return(
-        <View style={styles.container}}>
-//            <Text style = styles.title>
-//                ODOK
-//            </Text> //!!maybe not needed
-            <Text style={{ fontSize: 10, color: "black" }}>
-                Add book directly: //!!what text??
+        <View style = {styles.container}>
+            <Text style = {styles.title}>
+                Add book directly: 
             </Text>
-            <View style={{ styles.bookCover }}>
-                <Image source={{uri: image.uri}} style={styles.bookCoverImage}>
+            <View style = {styles.bookCover}>
+                <Image source = {form.image.uri} style={styles.bookCoverImage}/>
             </View>
             <Button
                 title = "Change Cover"
-                onPress = {() => onSubmit(form)}
+                onPress = {uploadImage}
             />
 
-            <View>
+            <View style = {{alignItems: "center", gap: 5, padding: 5}}>
                 <TextInput placeholder = "title" style = {styles.input} onChangeText={onChangeText("title")} value = {form.title}/>
                 <TextInput placeholder = "author" style = {styles.input} onChangeText={onChangeText("author")} value = {form.author}/>
-                <TextInput placeholder = "page" style = {styles.input} onChangeText={onChangeText("page")} value = {form.page}/> //!!check if numeric
+                <TextInput placeholder = "page" style = {styles.input} onChangeText={onChangeText("page_number")} value = {form.page_number}/>
                 <TextInput placeholder = "isbn" style = {styles.input} onChangeText={onChangeText("isbn")} value = {form.isbn}/>
             </View>
+            
+            <Button
+                title = "Save Book"
+                onPress = {() => onSubmit(form)}
+            />
+            
             <Button
                 title="go back home"
                 onPress={() => navigation.navigate("HomeScreen")}
             />
         </View>
     );
-}
 
+}
 export {BookInfoScreen};
 
 const styles = StyleSheet.create({
@@ -68,6 +95,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 30,
         color: "black",
+        alignItems: "center",
     },
     bookCover: { //!!from OdokTimerScreen
         height: 250,
@@ -84,7 +112,7 @@ const styles = StyleSheet.create({
     },
     input: {
         height: 40, //!!change values
-        width: 10, //!!change values
+        width: 100, //!!change values
         borderWidth: 2,
         padding: 10,
     },
