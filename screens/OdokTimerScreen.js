@@ -11,7 +11,7 @@ import {
     Keyboard,
     KeyboardAvoidingView,
     Modal,
-    Image
+    Image,
 } from 'react-native';
 import { Icon } from "@rneui/themed";
 import { NavigationContainer } from '@react-navigation/native';
@@ -20,6 +20,7 @@ import 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native';
 import { useCardAnimation } from '@react-navigation/stack';
+import {colors, regWidth, regHeight} from '../config/globalStyles';
 
 
 const OdokTimerScreen = ({navigation, route}) => {
@@ -69,7 +70,7 @@ const OdokTimerScreen = ({navigation, route}) => {
             :
             null
         }
-        console.log(`${date.getHours()}:${date.getMinutes()}`);
+        // console.log(`${date.getHours()}:${date.getMinutes()}`);
     }
 
     const formatTime = () => {
@@ -97,27 +98,25 @@ const OdokTimerScreen = ({navigation, route}) => {
         >
             <View
                 style={{
-                    height: 250,
-                    width: 200,
-                    backgroundColor: "white",
                     justifyContent: "center",
                     alignItems: "center",
-                    marginVertical: 30,
+                    marginVertical: regHeight * 30,
                 }}
             >
                 <Image 
-                        source={route.params.image}
-                        style={{width:"100%", height:"100%"}}
-                    />
-                {/* <Text style={{ fontSize: 20, color: "black" }}>
-                    Book Cover
-                </Text> */}
+                    source={route.params.image}
+                    style={{
+                        width: regWidth * 250,
+                        height: regWidth * 250,
+                        resizeMode: "contain",
+                    }}
+                />
 
             </View>
-            <Text style={{ fontSize: 20, color: "black" }}>
+            <Text style={{ fontSize: regWidth * 20, color: "black" }}>
                 {route.params.title}
             </Text>
-            <Text style={{ fontSize: 30, color: "black" }}>
+            <Text style={{ fontSize: regWidth * 30, color: "black" }}>
                 {formatTime()}
             </Text>
             <View 
@@ -129,25 +128,25 @@ const OdokTimerScreen = ({navigation, route}) => {
                 <Pressable 
                     onPress={startTimer}
                     style={{
-                        marginHorizontal: 10,
+                        marginHorizontal: regWidth * 10,
                     }}
                 >
                     <Icon 
                         name={!isActive ? 'play-circle' : 'pause-circle'}
                         type='ionicon'
-                        size={60}
+                        size={regWidth * 60}
                     />
                 </Pressable>
                 <Pressable 
                     onPress={stopTimer}
                     style={{
-                        marginHorizontal: 10,
+                        marginHorizontal: regWidth * 10,
                     }}
                 >
                     <Icon 
                         name='stop-circle'
                         type='ionicon'
-                        size={60}
+                        size={regWidth * 60}
                     />
                 </Pressable>
             </View>
@@ -172,12 +171,12 @@ const OdokTimerScreen = ({navigation, route}) => {
                         }
                     }
                 />
-                <View
+                <ScrollView
                     style={{
-                    padding: 16,
+                    padding: regWidth * 16,
                     width: '100%',
                     // maxWidth: 400,
-                    borderRadius: 10,
+                    borderRadius: regWidth * 10,
                     position: "absolute",
                     bottom: 0,
                     height: "70%",
@@ -191,7 +190,7 @@ const OdokTimerScreen = ({navigation, route}) => {
                             flexDirection: "row",
                         }}
                     >
-                        <Text style={{ fontSize: 20, color: "black" }}>
+                        <Text style={{ fontSize: regWidth * 20, color: "black" }}>
                             End Odok
                         </Text>
                         <Pressable
@@ -200,7 +199,7 @@ const OdokTimerScreen = ({navigation, route}) => {
                             <Icon 
                                 name='close'
                                 type='antdesign'
-                                size={30}
+                                size={regWidth * 30}
                             />
                         </Pressable>
                     </View>
@@ -215,7 +214,7 @@ const OdokTimerScreen = ({navigation, route}) => {
                                 marginTop: 10,
                             }}
                         >
-                            <Text style={{ fontSize: 18, color: "black", width: 70, }}>
+                            <Text style={{ fontSize: regWidth * 18, color: "black", width: regWidth * 70, }}>
                                 Title
                             </Text>
                             <Text>
@@ -229,7 +228,7 @@ const OdokTimerScreen = ({navigation, route}) => {
                                 marginTop: 10,
                             }}
                         >
-                            <Text style={{ fontSize: 18, color: "black", width: 70, }}>
+                            <Text style={{ fontSize: regWidth * 18, color: "black", width: regWidth * 70, }}>
                                 Time
                             </Text>
                             <Text>
@@ -243,7 +242,7 @@ const OdokTimerScreen = ({navigation, route}) => {
                                 marginTop: 10,
                             }}
                         >
-                            <Text style={{ fontSize: 18, color: "black", width: 70, }}>
+                            <Text style={{ fontSize: regWidth * 18, color: "black", width: regWidth * 70, }}>
                                 Total
                             </Text>
                             <Text>
@@ -258,7 +257,7 @@ const OdokTimerScreen = ({navigation, route}) => {
                                 // backgroundColor:"pink"
                             }}
                         >
-                            <Text style={{ fontSize: 18, color: "black", width: 70, }}>
+                            <Text style={{ fontSize: regWidth * 18, color: "black", width: regWidth * 70, }}>
                                 Pages
                             </Text>
                             <Text>
@@ -283,10 +282,10 @@ const OdokTimerScreen = ({navigation, route}) => {
                             style={{
                                 // flexDirection: "row",
                                 // alignItems: "center",
-                                marginTop: 10,
+                                marginTop: regHeight * 10,
                             }}
                         >
-                            <Text style={{ fontSize: 18, color: "black", width: 70, }}>
+                            <Text style={{ fontSize: regWidth * 18, color: "black", width: regWidth * 70, }}>
                                 Memo
                             </Text>
                             <ScrollView
@@ -299,7 +298,7 @@ const OdokTimerScreen = ({navigation, route}) => {
                                     padding: 0,
                                     paddingHorizontal: 10,
                                     paddingVertical: 10,
-                                    height: 180,
+                                    height: regHeight * 180,
                                 }}
                                 multiline={true}
                                 textAlignVertical="top"
@@ -311,33 +310,30 @@ const OdokTimerScreen = ({navigation, route}) => {
                     </Pressable>
                     <View
                         style={{
-                            // flexDirection: "row",
                             alignItems:  "flex-end",
                             justifyContent: "center",
-                            marginTop: 10,
+                            marginTop: regHeight * 10,
                             
                         }}
                     >
                         <Pressable
                             style={{
-                                borderWidth: 1,
+                                borderWidth: regWidth * 1,
                                 alignItems: "center",
                                 justifyContent: "center",
-                                // backgroundColor: 'pink'
-                                // width: "20%",
-                                paddingHorizontal: 25,
-                                paddingVertical: 5,
+                                paddingHorizontal: regWidth * 25,
+                                paddingVertical: regHeight * 5,
                             }}
                             onPress={() => navigation.navigate("HomeScreen")}
                         >
-                            <Text style={{ fontSize: 15, color: "black" }}>
+                            <Text style={{ fontSize: regWidth * 15, color: "black" }}>
                                 Save
                             </Text>
                         </Pressable>
 
                     </View>
 
-                </View>
+                </ScrollView>
 
 
             </Modal>
