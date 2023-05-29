@@ -1,8 +1,12 @@
 import { Text, View, ScrollView, StyleSheet, FlatList, TouchableHighlight, Image, Pressable, TouchableOpacity, TextInput } from "react-native";
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 // import {Icon} from "@rneui/themed"
-import { Button } from 'react-native';
+import { Button, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
+import { useQuery } from "../App";
+import { Book } from "../App";
+import { SearchBar } from '@rneui/themed';
+import { useRealm } from "../App";
 
 // type BookData = {
 //     title: String;
@@ -12,97 +16,79 @@ import Icon from 'react-native-vector-icons/Ionicons'
 //     status: Number;
 // };
 
-const tempData = [
-    {
-        title: "Harry Potter and the Philosopher's Stone",
-        author: "J. K. Rowling",
-        page_number: 223,
-        image: require("./img/harrypotter_1.jpg"),
-        status: 0,
-    },
-    {
-        title: "Harry Potter and the Chamber of Secrets",
-        author: "J. K. Rowling",
-        page_number: 251,
-        image: require("./img/harrypotter_2.jpg"),
-        status: 1,
-    },
-        {
-        title: "Harry Potter and the Chamber of Secrets",
-        author: "J. K. Rowling",
-        page_number: 251,
-        image: require("./img/harrypotter_2.jpg"),
-        status: 0,
-    },
-    {
-        title: "Harry Potter and the Chamber of Secrets",
-        author: "J. K. Rowling",
-        page_number: 251,
-        image: require("./img/harrypotter_2.jpg"),
-        status: 1,
-    },
-    {
-        title: "Harry Potter and the Chamber of Secrets",
-        author: "J. K. Rowling",
-        page_number: 251,
-        image: require("./img/harrypotter_2.jpg"),
-        status: 1,
-    },
-    {
-        title: "Harry Potter and the Chamber of Secrets",
-        author: "J. K. Rowling",
-        page_number: 251,
-        image: require("./img/harrypotter_2.jpg"),
-        status: 1,
-    },
-    {
-        title: "Harry Potter and the Chamber of Secrets",
-        author: "J. K. Rowling",
-        page_number: 251,
-        image: require("./img/harrypotter_2.jpg"),
-        status: 1,
-    },
-];
 
-const Item = ({item, onPress, backgroundColor, textColor}) => (
-    <TouchableOpacity onPress={onPress} style = {[styles.book, {backgroundColor}]} activeOpacity={0.7} >
-    <View style={styles.bookcontainer}>
-        <Image 
-            style={styles.bookimage}
-            source={item.image}
-        />
-        <View style={{flex: 0.1}}/>
-        <View style={styles.titlecontainer}>
-            <View style={{alignSelf: "flex-end"}}>{status_icon(item.status)}</View>
-            <Text style={[styles.title, {color: textColor}]}>{item.title}</Text>
-            <Text style={[styles.title, {color: textColor}]}>{item.author}</Text>
-        </View>
-    </View>
-    </TouchableOpacity>
-);
+
 
 
 const BooklistScreen = ({navigation}) => {
+    
 
-    const [searchVisible, setSearchVisible] = useState(false);
-    const [searched, setSearched] = useState('');
+
     const [filtered, setFiltered] = useState([]);
+    const [searchInput, setSearchInput] = useState("");
 
     const handleSearchIconOnClick = () => {
         setSearchVisible(true);
     };
+    
 
-    const handleSearchIconCancel = () => {
-        setSearchVisible(false);
-        setSearched('');
-        setFiltered([]);
-    };
+    const realm = useRealm();
+    const odoks = realm.objects("Odok");
 
-    const handleSearchItem = () => {
-        const filteredBooks = tempData.filter((book) =>
-            book.title.toLowerCase().includes(searched.toLowerCase())
+    const deleteBook = (target) => {
+        const bookTitle = target.title;
+        const importantOdoks = odoks.filtered("title == $0", bookTitle);
+
+        Alert.alert("","Do you really want to delete? Odok will be deleted together.", [
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+            {text: 'OK', onPress: () => {
+                realm.write(() => {
+                    realm.delete(target)
+                    importantOdoks.map((item) => realm.delete(item))
+                })
+                
+            }},
+          ])
+    }
+
+    const [books, setBooks] = useState(useQuery(Book));
+
+    const Item = ({item, onPress, backgroundColor, textColor}) => (
+        <TouchableOpacity onPress={onPress} style = {[styles.book, {backgroundColor}]} activeOpacity={0.7} >
+        <View style={styles.bookcontainer}>
+            <View style = {{flexDirection:"column"}}>
+            <Image 
+                style={styles.bookimage}
+                source={{uri : item.image}}
+            />
+            <Button
+                title="delete"
+                onPress={() => deleteBook(item)}
+            />
+            </View>
+            <View style={{flex: 0.1}}/>
+            <View style={styles.titlecontainer}>
+                <View style={{alignSelf: "flex-end"}}>{status_icon(item.status)}
+                </View>
+                <Text style={[styles.title, {color: textColor}]}>{item.title}</Text>
+                <Text style={[styles.title, {color: textColor}]}>{item.author}</Text>
+            </View>
+        </View>
+        </TouchableOpacity>
+    );
+
+
+
+    const updateSearch = (search) => {
+        setSearchInput(search);
+        const filteredBooks = books.filter((book) =>
+            book.title.toLowerCase().includes(search.toLowerCase())
         );
         setFiltered(filteredBooks);
+
     };
 
     const renderItem = ({item}) => {
@@ -116,9 +102,11 @@ const BooklistScreen = ({navigation}) => {
                 {
                     title: item.title, 
                     author: item.author, 
-                    page_number: item.page_number, 
+                    page: item.page, 
                     image: item.image,
                     status: item.status,
+                    readPage : item.readPage,
+                    id : item._id
                 })}}
                 backgroundColor={backgroundColor}
                 textColor={color}
@@ -127,49 +115,22 @@ const BooklistScreen = ({navigation}) => {
     };
 
     return(
-        <View style={styles.container}>
-            <View style={styles.toolbar_container}>
-                {searchVisible ? (
-                    <View style={styles.toolbar}> 
-                        <TouchableOpacity style={styles.search_icon} onPress={handleSearchIconCancel}>
-                            <Icon name="arrow-back-outline" size={24} color="black"/>
-                        </TouchableOpacity>
-                        <TextInput 
-                            style={styles.toolbar_search}
-                            placeholder="keyword"
-                            value={searched}
-                            onChangeText={setSearched}
-                            multiline={true}
-                            autoFocus
-                        />
-                        <TouchableOpacity style={styles.search_icon} onPress={handleSearchItem}>
-                            <Icon name="search" size={24} color="black"/>
-                        </TouchableOpacity>
-                    </View>
-                ) : (
-                    <View style={styles.toolbar}>
-                        <Text style={styles.toolbar_title}>Reading List</Text>
-                        <TouchableOpacity style={styles.search_icon} onPress={handleSearchIconOnClick}>
-                            <Icon name="search" size={24} color="black"/>
-                        </TouchableOpacity>
-                    </View>
-                )
-                }
+        <View style={{flex:1}}>
+            <View style={{height : 70}}>
+
+            <SearchBar
+                placeholder="Type Book title" value = {searchInput} onChangeText={updateSearch} 
+                containerStyle ={{backgroundColor:"#000333"}} inputContainerStyle = {{backgroundColor:"#FFFFF0"}}
+                />
+        
             </View>
-            <View style={{flex: 2}}>
-            <FlatList
-                data={filtered.length > 0 ? filtered : tempData}
-                renderItem={renderItem}
-            />
-            </View>
-            <View style={{flex: 1}}>
-            <Text>
-                here is booklist page
-            </Text>
-            <Button
-            title="book detail"
-            onPress={() => navigation.navigate("BookDetail")}
-        />
+        <View style={{flex:1}}>
+                <FlatList
+                    data={searchInput ? filtered : books}
+                    renderItem={renderItem}
+                />
+                <View style={{height:100}}></View>
+
         </View>
         </View>
     );
@@ -221,7 +182,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     toolbar_container: {
-        flex: 1,
+        height : 60,
         backgroundColor: 'white',
     },
     toolbar: {
@@ -245,9 +206,9 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'black',
         backgroundColor: "white",
-        margin: 10,
         paddingLeft: 10,
         paddingRight: 10,
+        width : 250
     },
 })
 export {BooklistScreen};

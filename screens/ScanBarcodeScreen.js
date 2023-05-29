@@ -35,8 +35,6 @@ const ScanBarcodeScreen = ({navigation}) => {
           }
         }
         );
-        // setSearchResult(response.data.items);
-        // console.log(response.data);
 
         parseString(response.data, function (err, result) {
           console.dir(result);
@@ -45,23 +43,14 @@ const ScanBarcodeScreen = ({navigation}) => {
           setBookSearched(true);
           console.log({title: res.title[0], author : res.author[0], image : res.image[0]})
       });
-        // // console.log(typeof(response.data));
-        // console.log(response.data.items);
-        // console.log(typeof(response.data.items));
-        // console.log(response.data.items instanceof Array);
       } catch (e) {
         console.log("failed");
-        // setSearchResult([]);
       }
     };
 
     const onBarcodeScan = (codeval) => {
-      //codeval is the scanned value
       setCodeval(codeval);
       setOpenScan(false);
-      // console.log(typeof(codeval));
-      // console.log(codeval)
-      alert(codeval); 
       searchBook(codeval);
   };
     
@@ -169,7 +158,13 @@ const ScanBarcodeScreen = ({navigation}) => {
             </Text>
             <Button
             title="go to book info"
-            onPress={() => navigation.navigate("BookInfo")}
+            onPress={() => navigation.navigate("BookInfo",
+            {
+              title: bookInfo.title, 
+              author: bookInfo.author, 
+              page_number: 0, 
+              image: bookInfo.image,
+            })}
             />
         </View>
         </View>

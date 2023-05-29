@@ -18,6 +18,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { Button } from 'react-native';
 import * as RootNavigation from "./RootNavigation"
+import { createRealmContext, RealmConfiguration, Builder } from '@realm/react';
 
 
 
@@ -80,7 +81,13 @@ const Tabs = () => {
     const list = [
     { title: 'search with book name' , onPress: () => {setIsVisible(false); RootNavigation.navigate("SearchBook")}},
     { title: 'search with book barcode', onPress: () => {setIsVisible(false); RootNavigation.navigate("ScanBarcode")} },
-    { title: 'type book information directly', onPress: () => {setIsVisible(false); RootNavigation.navigate("BookInfo")}},
+    { title: 'type book information directly', onPress: () => {setIsVisible(false); RootNavigation.navigate("BookInfo", 
+    {
+        title: "", 
+        author: "", 
+        page_number: 0, 
+        image: "",
+    })}},
     ];
 
 

@@ -5,6 +5,9 @@ import { Button } from 'react-native';
 import { Overlay } from '@rneui/themed';
 import Icon from 'react-native-vector-icons/Ionicons'
 import LinearGradient from 'react-native-linear-gradient';
+import { useRealm } from "../App";
+import { useQuery } from "../App";
+import { Odok } from "../App";
 
 // type OdokData = {
 //     id: Number;
@@ -60,6 +63,18 @@ const tempOdokData = [
     },
 ];
 
+// {
+// title : String
+// author : String
+// start page : Int16Array
+// end page:Int16Array
+// date : AxiosHeaders
+// time : string
+// read_time : int
+
+
+// }
+
 
 
 const GalleryScreen = () => {
@@ -67,6 +82,10 @@ const GalleryScreen = () => {
     const [visible, setVisible] = useState(false);
 
     const [selectedOdok, setSelectedOdok] = useState(null);
+
+    const realm = useRealm();
+
+    const [odoks, setOdoks] = useState(useQuery(Odok).sorted("_id",true));
       
     const toggleOverlay = (item) => {
         setSelectedOdok(item)
@@ -78,21 +97,21 @@ const GalleryScreen = () => {
         if (!selectedOdok) return null;
 
         const find_image = () => {
-            switch (selectedOdok.time) {
-                case "6:00":
-                    return require("./img/odokwan_600.png");
-                case "12:00":
-                    return require("./img/odokwan_1200.png");
-                case "18:00":
-                    return require("./img/odokwan_1800.png");
-                case "24:00":
-                    return require("./img/odokwan_2400.png");
-                default:
-                    return require("./img/odokwan_600.png");
-            };
+            if(selectedOdok.time<6){
+                return require("./img/odokwan_600.png");
+            }else if(selectedOdok.time < 12){
+                return require("./img/odokwan_1200.png");
+            }else if(selectedOdok.time < 18){
+                return require("./img/odokwan_1800.png");
+            }else{
+                return require("./img/odokwan_2400.png");
+            }
         };                
 
         const img_address = find_image();
+        const hour = parseInt( selectedOdok.read_time / 3600);
+        const minute = parseInt((selectedOdok.read_time - hour*3600) / 60);
+        const second = selectedOdok.read_time % 60;
 
         return (
           <View>
@@ -115,10 +134,10 @@ const GalleryScreen = () => {
                         <Text style={styles.overlay_author}>{selectedOdok.author}</Text>
                         <View style={{flexDirection: 'row'}}>
                             <View style={{paddingLeft: 20, width: 130}}>
-                            <Text style={styles.overlay_read_pages}>{selectedOdok.read_pages} page</Text>
+                            <Text style={styles.overlay_read_pages}>{selectedOdok.read_page} page</Text>
                             </View>
                             <View style={{paddingLeft: 3}}>
-                            <Text style={styles.overlay_time}>{selectedOdok.minutes}m {selectedOdok.seconds}s</Text>
+                            <Text style={styles.overlay_time}>{hour}h {minute}m {second}s</Text>
                             </View>
                         </View>
                     </View>
@@ -129,23 +148,26 @@ const GalleryScreen = () => {
         );
       };
 
-    const Odok = ({item, onPress, textColor}) => {
+    const MakeOdok = ({item, onPress, textColor}) => {
 
         const choose_color = () => {
-            switch (item.time) {
-            case "6:00":
+
+            if(item.time<6){
                 return ["#af7ff0", "#d8a9c2", "#f4c7a1"];
-            case "12:00":
+            }else if(item.time < 12){
                 return ["#66d6ff", "#5ab8ff", "#51a3ff"];
-            case "18:00":
+            }else if(item.time < 18){
                 return ["#f37880", "#f78d53", "#fa9c31"];
-            case "24:00":
-                return ["#0a0b9c", "#1b1091", "#2d1484"];
-            default:
-                return ["#66d6ff", "#5ab8ff", "#51a3ff"];
-            };
+            }else{
+                return ["#f37880", "#f78d53", "#fa9c31"];
+            }
+
         };
         const chosen_color = choose_color();
+
+        const hour = parseInt( item.read_time / 3600);
+        const minute = parseInt((item.read_time - hour*3600) / 60);
+        const second = item.read_time % 60;
         return (
         <TouchableOpacity onPress={onPress} style = {styles.odok_container} activeOpacity={0.7} >
             <LinearGradient 
@@ -159,8 +181,8 @@ const GalleryScreen = () => {
                     <Text style={styles.author}>{item.author}</Text>
                 </View>
                 <View style={styles.bottom_container}>
-                    <Text style={styles.read_pages}>{item.read_pages} page</Text>
-                    <Text style={styles.read_time}>{item.minutes}m {item.seconds}s</Text>
+                    <Text style={styles.read_pages}>{item.read_page} page</Text>
+                    <Text style={styles.read_time}>{hour}h {minute}m {second}s</Text>
                     <Text style={styles.date}>{item.date}</Text>
                 </View>
             </LinearGradient>
@@ -170,7 +192,7 @@ const GalleryScreen = () => {
     
     const renderOdok = ({item}) => {
         return (
-            <Odok
+            <MakeOdok
                 item={item}
                 onPress={()=>toggleOverlay(item)}
                 textColor={"white"}
@@ -182,7 +204,7 @@ const GalleryScreen = () => {
         <View style={{flex: 2}}>
             <View>{OverlayExample()}</View>
             <FlatList
-            data={tempOdokData}
+            data={odoks}
             renderItem={renderOdok}
             />
         </View>

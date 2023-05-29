@@ -20,12 +20,16 @@ import 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native';
 import { useCardAnimation } from '@react-navigation/stack';
+import { Book, useObject, useRealm } from '../App';
+
+
 
 
 const OdokTimerScreen = ({navigation, route}) => {
     const insets = useSafeAreaInsets();
     const date = new Date();
     const [count, setCount] = useState(0);
+    const realm = useRealm();
     
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
@@ -90,6 +94,54 @@ const OdokTimerScreen = ({navigation, route}) => {
         return `${getHours}h ${getMinutes}m ${getSeconds}s`
     }
 
+    const currentId = () =>{
+        if(realm.objects("Odok").max("_id")){
+            return(Number(realm.objects("Odok").max("_id")+1))
+        }else{
+            return(1)
+        }
+    }
+
+    const currenBook = useObject(Book, route.params.id)
+    
+
+    const saveOdok = () => {
+
+
+
+        realm.write(() => {
+            realm.create("Odok", {
+                _id : currentId(),
+                title: route.params.title,
+                author:route.params.author,
+                read_page:Number(page) - route.params.readPage,
+                read_time:count,//초
+                date:`${date.getFullYear()}-${convert(date.getMonth())}-${convert(date.getDate())}`,
+                time : date.getHours(),
+                memo : memo
+            })
+        }
+
+        
+        
+        )
+
+        
+        realm.write(() => {
+            currenBook.readPage = Number(page)
+        })
+        navigation.navigate("HomeScreen")
+
+    }
+
+    const convert = (item) => {
+        if(Number(item) < 10){
+            return(`0${item}`)
+        }else{
+            return(item)
+        }
+    }
+
     return(
         <KeyboardAvoidingView 
             style={styles.container}
@@ -106,7 +158,7 @@ const OdokTimerScreen = ({navigation, route}) => {
                 }}
             >
                 <Image 
-                        source={route.params.image}
+                        source={{ uri : route.params.image}}
                         style={{width:"100%", height:"100%"}}
                     />
                 {/* <Text style={{ fontSize: 20, color: "black" }}>
@@ -262,7 +314,7 @@ const OdokTimerScreen = ({navigation, route}) => {
                                 Pages
                             </Text>
                             <Text>
-                                {route.params.page_number}p ~ 
+                                {route.params.readPage}p ~ 
                             </Text>
                             <TextInput 
                                 placeholder='type page'
@@ -328,7 +380,7 @@ const OdokTimerScreen = ({navigation, route}) => {
                                 paddingHorizontal: 25,
                                 paddingVertical: 5,
                             }}
-                            onPress={() => navigation.navigate("HomeScreen")}
+                            onPress={saveOdok}
                         >
                             <Text style={{ fontSize: 15, color: "black" }}>
                                 Save

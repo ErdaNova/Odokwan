@@ -77,7 +77,13 @@ const SearchBookScreen = ({navigation}) => {
           renderItem={({item}) => 
           <View style = {{width:"100%", height: 80, flexDirection : "row", alignContent:"center", justifyContent:"center"}} >
             <TouchableOpacity style = {{width:"90%", height: "90%", padding : 10, flexDirection : "row", backgroundColor:"#ffffff"}}
-              onPress={() => navigation.navigate("BookInfo")}>
+              onPress={() => navigation.navigate("BookInfo",
+              {
+                title: item.title, 
+                author: item.author, 
+                page_number: 0, 
+                image: item.image,
+              })}>
             <View>
               <Image  style = {{height : 56, width : 40}} source={{uri : item.image}} />
               </View>
