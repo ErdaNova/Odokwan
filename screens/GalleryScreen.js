@@ -1,13 +1,17 @@
-import { Text, View, ScrollView, StyleSheet, FlatList, TouchableHighlight, Image, Pressable, TouchableOpacity, TextInput, ImageBackground } from "react-native";
-import { React, useState } from "react";
+import { Text, View, ScrollView, StyleSheet, FlatList, TouchableHighlight, Image, Pressable, TouchableOpacity, TextInput, ImageBackground, Platform, PermissionsAndroid, } from "react-native";
+import { React, useState, useRef, } from "react";
 // import {Icon} from "@rneui/themed"
 import { Button } from 'react-native';
 import { Overlay } from '@rneui/themed';
-import Icon from 'react-native-vector-icons/Ionicons'
+// import Icon from 'react-native-vector-icons/Ionicons'
+import { Icon } from "@rneui/themed";
 import LinearGradient from 'react-native-linear-gradient';
 import { useRealm } from "../App";
 import { useQuery } from "../App";
 import { Odok } from "../App";
+import ViewShot from "react-native-view-shot";
+import Share from 'react-native-share';
+import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 
 // type OdokData = {
 //     id: Number;
@@ -91,6 +95,56 @@ const GalleryScreen = () => {
         setSelectedOdok(item)
         setVisible(!visible);
     };
+
+    const onShare = () => {
+        captureRef.current.capture().then(async(uri) => {
+            console.log("do something with ", uri);
+            await Share.open({
+                url: Platform.OS === 'ios' ? `file://${uri}` : uri
+            })
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+        }),
+        (error) => console.error("Oops, snapshot failed", error);
+    };
+
+    async function hasAndroidPermission() {
+        const permission = Platform.Version >= 33 ? PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
+        
+        const hasPermission = await PermissionsAndroid.check(permission);
+        if (hasPermission) {
+            return true;
+        }
+        
+        const status = await PermissionsAndroid.request(permission);
+        return status === 'granted';
+    }
+
+    const onSave = async() => {
+        if (Platform.OS === "android" && !(await hasAndroidPermission())) {
+            console.log(Platform.Version)
+            return;
+        }
+
+        captureRef.current.capture().then(async(uri) => {
+            console.log("do something with ", uri);
+            await CameraRoll.save(
+                Platform.OS === 'ios' ? `file://${uri}` : uri,
+                {type: 'photo'}
+            )
+            .then((res) => {
+                console.log("Success", res);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+            }),
+            (error) => console.error("Oops, snapshot failed", error);
+    }
   
     const OverlayExample = () => {
 
@@ -124,6 +178,40 @@ const GalleryScreen = () => {
                     colors={["#f37880", "#f78d53", "#fa9c31"]} 
                     style={styles.overlay_linear}
                 > */}
+                <View
+                    style={{
+                        flexDirection: "row",
+                        justifyContent: "flex-end",
+                        marginHorizontal: 10,
+                        marginBottom: 10,
+                    }}
+                >
+                    <Pressable
+                        onPress={() => onSave()}
+                        style={{ marginHorizontal: 10, }}
+                    >
+                        <Icon 
+                            name='download'
+                            type='feather'
+                            size={30}
+                            color="white"
+                        />
+                    </Pressable>
+                    <Pressable
+                        onPress={() => onShare()}
+                    >
+                        <Icon 
+                            name='share-2'
+                            type='feather'
+                            size={30}
+                            color="white"
+                        />
+                    </Pressable>
+                </View>
+                <ViewShot
+                    ref={captureRef}
+                    options={{ fileName: "Your-File-Name", format: "jpg", quality: 0.9 }}
+                >
                     <ImageBackground
                         style={styles.odokimage}
                         source={find_image()}
@@ -142,6 +230,7 @@ const GalleryScreen = () => {
                         </View>
                     </View>
                     </ImageBackground>
+                </ViewShot>
                 {/* </LinearGradient> */}
             </Overlay>
           </View>

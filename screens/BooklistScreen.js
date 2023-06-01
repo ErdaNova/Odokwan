@@ -7,6 +7,8 @@ import { useQuery } from "../App";
 import { Book } from "../App";
 import { SearchBar } from '@rneui/themed';
 import { useRealm } from "../App";
+import Icon from 'react-native-vector-icons/Ionicons';
+import {colors, regWidth, regHeight} from '../config/globalStyles';
 
 // type BookData = {
 //     title: String;
@@ -15,7 +17,6 @@ import { useRealm } from "../App";
 //     image: Number;
 //     status: Number;
 // };
-
 
 
 
@@ -155,24 +156,28 @@ const styles = StyleSheet.create({
     bookcontainer: {
         flex: 1,
         flexDirection: 'row',
+        alignItems: "center",
+        paddingVertical: regHeight * 12,
+        paddingRight: regWidth * 12,
     },
     titlecontainer: {
         flexDirection: "column",
         flex: 1,
     },
     book: {
-        padding: 20,
-        marginVertical: 8,
-        marginHorizontal: 16,
+        // padding: 20,
+        marginVertical: regHeight * 8,
+        marginHorizontal: regWidth * 16,
     },
     title: {
         color: "black",
-        marginVertical: 10,
-        fontSize: 12,
+        marginVertical: regHeight * 10,
+        fontSize: regWidth * 12,
     },
     bookimage: {
-        width: 50,
-        height: 80,
+        width: regWidth * 100,
+        height: regWidth * 100,
+        resizeMode: "contain",
     },
     status_icon: {
         width: 50,
@@ -200,10 +205,10 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     search_icon: {
-        marginLeft: 10,
+        // marginLeft: 10,
     },
     toolbar_search: {
-        borderWidth: 1,
+        borderWidth: regWidth * 1,
         borderColor: 'black',
         backgroundColor: "white",
         paddingLeft: 10,
