@@ -6,7 +6,7 @@ import { Book, useObject, useRealm } from '../App';
 import LinearGradient from 'react-native-linear-gradient';
 import { useState } from "react";
 import { Overlay } from '@rneui/themed';
-
+import {colors, regWidth, regHeight} from '../config/globalStyles';
 
 
 const BookDetailScreen = ({navigation, route}) => {
@@ -208,7 +208,8 @@ const styles = StyleSheet.create({
     },
     detailcontainer: {
         flexDirection: 'row',
-        height:200
+        // height:200,
+        marginTop: regHeight * 12,
     },
     textcontainer: {
         flexDirection: "column",

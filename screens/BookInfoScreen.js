@@ -58,7 +58,8 @@ const BookInfoScreen = ({navigation, route}) => {
         }
         
         )
-        navigation.navigate("HomeScreen")
+        // navigation.navigate("BooklistScreen")
+        navigation.popToTop();
     }
 
 

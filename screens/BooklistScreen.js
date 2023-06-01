@@ -142,7 +142,7 @@ const BooklistScreen = ({navigation}) => {
                     data={searchInput ? filtered : books}
                     renderItem={renderItem}
                 />
-                <View style={{height: regHeight * 100}}></View>
+                <View style={{height: regHeight * 120}}></View>
 
         </View>
         </View>

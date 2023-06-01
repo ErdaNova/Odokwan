@@ -129,7 +129,8 @@ const OdokTimerScreen = ({navigation, route}) => {
         realm.write(() => {
             currenBook.readPage = Number(page)
         })
-        navigation.navigate("HomeScreen")
+        // navigation.navigate("HomeScreen");
+        navigation.popToTop();
 
     }
 
