@@ -18,7 +18,7 @@ const HomeScreen = ({navigation}) => {
     const [books, setBooks] = useState(realm.objects("Book"));
     // const books = realm.objects("Book");
     const [recentOdok, setRecentOdok] = useState(useQuery(Odok).sorted("_id",true)[0]);
-    const bookTitle = recentOdok.title;
+    const bookId = (recentOdok ? recentOdok.book_id : '');
     const [recentBook, setRecentBook] = useState(null);
     // const recentBook = books.filtered("title == $0", bookTitle)[0];
     const [refreshing, setRefreshing] = useState(false);
@@ -28,7 +28,7 @@ const HomeScreen = ({navigation}) => {
     }, []);
 
     const fetchRecentBook = () => {
-        setRecentBook(books.filtered("title == $0", bookTitle)[0]);
+        setRecentBook(books.filtered("_id == $0", bookId)[0]);
     }
 
     const wait = (timeout) => {
@@ -52,17 +52,17 @@ const HomeScreen = ({navigation}) => {
                     />
                 }
             >
-            <Pressable
-                onPress={()=>{navigation.navigate("BookDetail", 
-                {
-                    title: recentBook.title, 
-                    author: recentBook.author, 
-                    page: recentBook.page, 
-                    image: recentBook.image,
-                    status: recentBook.status,
-                    readPage : recentBook.readPage,
-                    id : recentBook._id
-                })}}
+            <View
+                // onPress={()=>{navigation.navigate("BookDetail", 
+                // {
+                //     title: recentBook.title, 
+                //     author: recentBook.author, 
+                //     page: recentBook.page, 
+                //     image: recentBook.image,
+                //     status: recentBook.status,
+                //     readPage : recentBook.readPage,
+                //     id : recentBook._id
+                // })}}
                 style={styles.recentBookContainter}
             >
                 <Text
@@ -97,8 +97,22 @@ const HomeScreen = ({navigation}) => {
                     }
 
                 </View>
-                
-            </Pressable>
+
+            </View>
+            <Button
+                title="start odok"
+                onPress={() => {
+                    navigation.navigate("OdokTimer", {
+                        // title: route.params.title, 
+                        // image: route.params.image,
+                        // page: route.params.page,
+                        // author:route.params.author,
+                        // readPage : route.params.readPage,
+                        // id : route.params.id
+                        book: recentBook
+                    }); 
+                }}
+            />
         {/* <Button
             title="book list"
             onPress={() => navigation.navigate("Booklist")} 

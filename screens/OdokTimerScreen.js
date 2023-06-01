@@ -22,10 +22,11 @@ import { useTheme } from '@react-navigation/native';
 import { useCardAnimation } from '@react-navigation/stack';
 import { Book, useObject, useRealm } from '../App';
 import {colors, regWidth, regHeight} from '../config/globalStyles';
-
+import { OdokOverlay, } from '../components';
 
 const OdokTimerScreen = ({navigation, route}) => {
     const insets = useSafeAreaInsets();
+    const book = route.params.book;
     const date = new Date();
     const [count, setCount] = useState(0);
     const realm = useRealm();
@@ -38,7 +39,15 @@ const OdokTimerScreen = ({navigation, route}) => {
     const increment = useRef(null);
 
     const [page, setPage] = useState('');
+    const [readPage, setReadPage] = useState(0);
     const [memo, setMemo] = useState('');
+
+    const [selectedOdok, setSelectedOdok] = useState(null);
+    const [visible, setVisible] = useState(false);
+
+    useEffect(() => {
+        setReadPage(Number(page) - book.readPage);
+    }, [page]);
 
     const startTimer = () => {
         setEndTime('');
@@ -101,8 +110,13 @@ const OdokTimerScreen = ({navigation, route}) => {
         }
     }
 
-    const currenBook = useObject(Book, route.params.id)
+    const currenBook = useObject(Book, book._id)
     
+    const toggleOverlay = (item) => {
+        // setSelectedOdok(item)
+        setVisible(!visible);
+        navigation.popToTop();
+    };
 
     const saveOdok = () => {
 
@@ -111,13 +125,14 @@ const OdokTimerScreen = ({navigation, route}) => {
         realm.write(() => {
             realm.create("Odok", {
                 _id : currentId(),
-                title: route.params.title,
-                author:route.params.author,
-                read_page:Number(page) - route.params.readPage,
+                title: book.title,
+                author:book.author,
+                read_page:Number(page) - book.readPage,
                 read_time:count,//초
                 date:`${date.getFullYear()}-${convert(date.getMonth())}-${convert(date.getDate())}`,
                 time : date.getHours(),
-                memo : memo
+                memo : memo,
+                book_id: book._id
             })
         }
 
@@ -130,7 +145,9 @@ const OdokTimerScreen = ({navigation, route}) => {
             currenBook.readPage = Number(page)
         })
         // navigation.navigate("HomeScreen");
-        navigation.popToTop();
+        // navigation.popToTop();
+        setModalVisible(false);
+        setVisible(!visible);
 
     }
 
@@ -147,6 +164,22 @@ const OdokTimerScreen = ({navigation, route}) => {
             style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
+            <OdokOverlay 
+                selectedOdok={{
+                    _id : currentId(),
+                    title: book.title,
+                    author:book.author,
+                    // read_page: Number(page) - book.readPage,
+                    read_page: readPage,
+                    read_time:count,//초
+                    date:`${date.getFullYear()}-${convert(date.getMonth())}-${convert(date.getDate())}`,
+                    time : date.getHours(),
+                    memo : memo,
+                    book_id: book._id
+                }} 
+                visible={visible} 
+                toggleOverlay={toggleOverlay} 
+            />
             <View
                 style={{
                     justifyContent: "center",
@@ -155,7 +188,7 @@ const OdokTimerScreen = ({navigation, route}) => {
                 }}
             >
                 <Image 
-                    source={{ uri : route.params.image}}
+                    source={{ uri : book.image}}
                     style={{
                         width: regWidth * 250,
                         height: regWidth * 250,
@@ -165,7 +198,7 @@ const OdokTimerScreen = ({navigation, route}) => {
 
             </View>
             <Text style={{ fontSize: regWidth * 20, color: "black" }}>
-                {route.params.title}
+                {book.title}
             </Text>
             <Text style={{ fontSize: regWidth * 30, color: "black" }}>
                 {formatTime()}
@@ -269,7 +302,7 @@ const OdokTimerScreen = ({navigation, route}) => {
                                 Title
                             </Text>
                             <Text>
-                            {route.params.title}
+                            {book.title}
                             </Text>
                         </View>
                         <View
@@ -312,7 +345,7 @@ const OdokTimerScreen = ({navigation, route}) => {
                                 Pages
                             </Text>
                             <Text>
-                                {route.params.readPage}p ~ 
+                                {book.readPage}p ~ 
                             </Text>
                             <TextInput 
                                 placeholder='type page'

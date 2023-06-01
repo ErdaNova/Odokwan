@@ -37,7 +37,8 @@ export class Odok extends Realm.Object {
             read_time:"int",//초
             date:"string",
             time : "int",
-            memo : "string"
+            memo : "string",
+            book_id: "int"
         },
         primaryKey:"_id"
     };
@@ -45,7 +46,7 @@ export class Odok extends Realm.Object {
 }
 
 const realmConfig = {
-    schema: [Book, Odok],schemaVersion: 8,};
+    schema: [Book, Odok],schemaVersion: 9,};
 
 export const {RealmProvider, useRealm, useObject, useQuery} = createRealmContext(realmConfig);
 
