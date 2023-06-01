@@ -13,6 +13,7 @@ import ViewShot from "react-native-view-shot";
 import Share from 'react-native-share';
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import {colors, regWidth, regHeight} from '../config/globalStyles';
+import { OdokOverlay, } from '../components';
 
 // type OdokData = {
 //     id: Number;
@@ -212,7 +213,7 @@ const GalleryScreen = () => {
                 </View>
                 <ViewShot
                     ref={captureRef}
-                    options={{ fileName: "Your-File-Name", format: "jpg", quality: 0.9 }}
+                    options={{ fileName: "Your-File-Name", format: "png", quality: 0.9 }}
                 >
                     <ImageBackground
                         style={styles.odokimage}
@@ -239,11 +240,16 @@ const GalleryScreen = () => {
                         </View>
                     </ImageBackground>
                 </ViewShot>
+                <View>
+                    <Text>
+                        {selectedOdok.memo}
+                    </Text>
+                </View>
                 {/* </LinearGradient> */}
             </Overlay>
           </View>
         );
-      };
+    };
 
     const MakeOdok = ({item, onPress, textColor}) => {
 
@@ -272,10 +278,10 @@ const GalleryScreen = () => {
                 style={styles.linear}    
             >
                 <View style={styles.title_container}>
-                    <Text style={styles.title}>{item.title}</Text>
+                    <Text style={styles.title} ellipsizeMode="tail" numberOfLines={1}>{item.title}</Text>
                 </View>
                 <View style={styles.author_container}>
-                    <Text style={styles.author}>{item.author}</Text>
+                    <Text style={styles.author} ellipsizeMode="tail" numberOfLines={1}>{item.author}</Text>
                 </View>
                 <View style={styles.bottom_container}>
                     <Text style={styles.read_pages}>{item.read_page} page</Text>
@@ -299,7 +305,12 @@ const GalleryScreen = () => {
 
     return(
         <View style={{flex: 2}}>
-            <View>{OverlayExample()}</View>
+            {/* <View>{OverlayExample()}</View> */}
+            <OdokOverlay 
+                selectedOdok={selectedOdok} 
+                visible={visible} 
+                toggleOverlay={toggleOverlay} 
+            />
             <FlatList
             data={odoks}
             renderItem={renderOdok}
@@ -333,6 +344,7 @@ const styles = StyleSheet.create({
         marginLeft: regWidth * 15,
         fontSize: regWidth * 16,
         fontWeight: 'bold',
+        width: "80%",
     },
     author_container: {
         flex: 1,
@@ -343,6 +355,7 @@ const styles = StyleSheet.create({
         marginLeft: regWidth * 15,
         fontSize: regWidth * 12,
         fontWeight: 'bold',
+        width: "80%",
     },
     bottom_container: {
         flex: 1,

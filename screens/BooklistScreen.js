@@ -113,13 +113,14 @@ const BooklistScreen = ({navigation}) => {
                 //onPress={()=>{alert("Clicked " + item.title); alert("click click")}}
                 onPress={()=>{navigation.navigate("BookDetail", 
                 {
-                    title: item.title, 
-                    author: item.author, 
-                    page: item.page, 
-                    image: item.image,
-                    status: item.status,
-                    readPage : item.readPage,
-                    id : item._id
+                    // title: item.title, 
+                    // author: item.author, 
+                    // page: item.page, 
+                    // image: item.image,
+                    // status: item.status,
+                    // readPage : item.readPage,
+                    // id : item._id
+                    book: item
                 })}}
                 backgroundColor={backgroundColor}
                 textColor={color}

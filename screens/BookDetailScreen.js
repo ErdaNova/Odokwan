@@ -7,13 +7,15 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useState } from "react";
 import { Overlay } from '@rneui/themed';
 import {colors, regWidth, regHeight} from '../config/globalStyles';
+import { OdokOverlay, } from '../components';
 
 
 const BookDetailScreen = ({navigation, route}) => {
     const realm = useRealm();
     const odoks = realm.objects("Odok");
-    const bookTitle = route.params.title;
-    const importantOdoks = odoks.filtered("title == $0", bookTitle);
+    const book = route.params.book
+    // const bookTitle = route.params.title;
+    const importantOdoks = odoks.filtered("title == $0", book.title);
     const [visible, setVisible] = useState(false);
 
     const [selectedOdok, setSelectedOdok] = useState(null);
@@ -136,27 +138,28 @@ const BookDetailScreen = ({navigation, route}) => {
 
     return(
         <View style={styles.container}>
-            <View>{OverlayExample()}</View>
+            <OdokOverlay 
+                selectedOdok={selectedOdok} 
+                visible={visible} 
+                toggleOverlay={toggleOverlay} 
+            />
             <View style={styles.detailcontainer}>
                 <View style={{flex: 1}}>
                     <Image 
-                        source={{uri : route.params.image}}
+                        source={{uri : book.image}}
                         style={styles.bookimage}
                     />
                 </View>
                 <View style={styles.textcontainer}>
-                    <View style={{marginLeft: 10, marginTop: 5}}>{status_icon(route.params.status)}</View>
+                    <View style={{marginLeft: 10, marginTop: 5}}>{status_icon(book.status)}</View>
                     <Text style={styles.title}>
-                        {route.params.title}
-                        {/* title */}
+                        {book.title}
                     </Text>
                     <Text style={styles.author}>
-                        {route.params.author}
-                        {/* author */}
+                        {book.author}
                     </Text>
                     <Text style={styles.page_number}>
-                        Total {route.params.page}p
-                        {/* Total 123p */}
+                        Total {book.page}p
                     </Text>
                 </View>
             </View>
@@ -172,12 +175,13 @@ const BookDetailScreen = ({navigation, route}) => {
                 <Button
                     title="start odok"
                     onPress={() => {navigation.navigate("OdokTimer", {
-                        title: route.params.title, 
-                        image: route.params.image,
-                        page: route.params.page,
-                        author:route.params.author,
-                        readPage : route.params.readPage,
-                        id : route.params.id
+                        // title: route.params.title, 
+                        // image: route.params.image,
+                        // page: route.params.page,
+                        // author:route.params.author,
+                        // readPage : route.params.readPage,
+                        // id : route.params.id
+                        book: book
                     }); console.log(importantOdoks)}}
                 />
                 <View style={{flex: 2}}>
