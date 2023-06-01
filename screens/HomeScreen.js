@@ -18,7 +18,7 @@ const HomeScreen = ({navigation}) => {
     const [books, setBooks] = useState(realm.objects("Book"));
     // const books = realm.objects("Book");
     const [recentOdok, setRecentOdok] = useState(useQuery(Odok).sorted("_id",true)[0]);
-    const bookTitle = recentOdok.title;
+    const bookTitle = (recentOdok ? recentOdok.title : "");
     const [recentBook, setRecentBook] = useState(null);
     // const recentBook = books.filtered("title == $0", bookTitle)[0];
     const [refreshing, setRefreshing] = useState(false);
