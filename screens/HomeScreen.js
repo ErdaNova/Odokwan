@@ -24,7 +24,6 @@ const HomeScreen = ({navigation}) => {
     const [refreshing, setRefreshing] = useState(false);
 
     useEffect(() => {
-        // console.log(recentBook);
         fetchRecentBook();
     }, []);
 

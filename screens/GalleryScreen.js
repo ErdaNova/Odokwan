@@ -219,18 +219,24 @@ const GalleryScreen = () => {
                         source={find_image()}
                         imageStyle={{borderRadius: 30}}
                     >
-                    <View style={{flexDirection: 'column'}}>
-                        <Text style={styles.overlay_title}>{selectedOdok.title}</Text>
-                        <Text style={styles.overlay_author}>{selectedOdok.author}</Text>
-                        <View style={{flexDirection: 'row'}}>
-                            <View style={{paddingLeft: 20, width: 130}}>
-                            <Text style={styles.overlay_read_pages}>{selectedOdok.read_page} page</Text>
-                            </View>
-                            <View style={{paddingLeft: 3}}>
-                            <Text style={styles.overlay_time}>{hour}h {minute}m {second}s</Text>
+                        <View style={{flexDirection: 'column', height: "100%", }}>
+                            <Text style={styles.overlay_title}>{selectedOdok.title}</Text>
+                            <Text style={styles.overlay_author}>{selectedOdok.author}</Text>
+                            <View 
+                                style={{
+                                    flexDirection: 'row', 
+                                    position: "absolute", 
+                                    bottom: 0,
+                                    marginBottom: regHeight * 18,  
+                                }}>
+                                <View style={{paddingLeft: 20, width: 130}}>
+                                    <Text style={styles.overlay_read_pages}>{selectedOdok.read_page} page</Text>
+                                </View>
+                                <View style={{paddingLeft: 3}}>
+                                    <Text style={styles.overlay_time}>{hour}h {minute}m {second}s</Text>
+                                </View>
                             </View>
                         </View>
-                    </View>
                     </ImageBackground>
                 </ViewShot>
                 {/* </LinearGradient> */}
@@ -396,13 +402,13 @@ const styles = StyleSheet.create({
     },
     overlay_read_pages: {
         fontSize: regWidth * 20, 
-        marginTop: regHeight * 128,
+        // marginTop: regHeight * 260,
         color: "#696969",
         fontWeight: 'bold',
     },
     overlay_time: {
         fontSize: regWidth * 20, 
-        marginTop: regHeight * 128, 
+        // marginTop: regHeight * 260,
         color: "#696969",
         fontWeight: 'bold',
     },
