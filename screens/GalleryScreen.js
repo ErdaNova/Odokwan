@@ -12,6 +12,7 @@ import { Odok } from "../App";
 import ViewShot from "react-native-view-shot";
 import Share from 'react-native-share';
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
+import {colors, regWidth, regHeight} from '../config/globalStyles';
 
 // type OdokData = {
 //     id: Number;
@@ -86,6 +87,7 @@ const GalleryScreen = () => {
     const [visible, setVisible] = useState(false);
 
     const [selectedOdok, setSelectedOdok] = useState(null);
+    const captureRef = useRef();
 
     const realm = useRealm();
 
@@ -161,7 +163,7 @@ const GalleryScreen = () => {
                 return require("./img/odokwan_2400.png");
             }
         };                
-
+        
         const img_address = find_image();
         const hour = parseInt( selectedOdok.read_time / 3600);
         const minute = parseInt((selectedOdok.read_time - hour*3600) / 60);
@@ -314,16 +316,16 @@ const styles = StyleSheet.create({
     odok_container: {
         // padding: 10,
         marginVertical: 8,
-        marginHorizontal: 16,
+        marginHorizontal: regWidth * 16,
         backgroundColor: "white",
-        height: 100,
-        borderRadius: 10,
+        height: regHeight * 100,
+        borderRadius: regWidth * 10,
     },
     title: {
         color: "white",
         marginVertical: 5,
-        marginLeft: 15,
-        fontSize: 16,
+        marginLeft: regWidth * 15,
+        fontSize: regWidth * 16,
         fontWeight: 'bold',
     },
     author_container: {
@@ -331,9 +333,9 @@ const styles = StyleSheet.create({
     },
     author: {
         color: "white",
-        marginBottom: 10,
-        marginLeft: 15,
-        fontSize: 12,
+        marginBottom: regHeight * 10,
+        marginLeft: regWidth * 15,
+        fontSize: regWidth * 12,
         fontWeight: 'bold',
     },
     bottom_container: {
@@ -343,64 +345,64 @@ const styles = StyleSheet.create({
     },
     read_pages: {
         color: "white",
-        marginLeft: 15,
-        fontSize: 18,
+        marginLeft: regWidth * 15,
+        fontSize: regWidth * 18,
         fontWeight: 'bold',
         flex: 1,
     },
     read_time: {
         color: "white",
-        marginLeft: 15,
-        fontSize: 18,
+        marginLeft: regWidth * 15,
+        fontSize: regWidth * 18,
         fontWeight: 'bold',
         flex: 1,
-        paddingLeft: 20,
+        paddingLeft: regWidth * 20,
     },
     date: {
         color: "white",
-        fontSize: 10,
+        fontSize: regWidth * 10,
         flex: 1,
         textAlign: "right",
-        marginRight: 10,
-        marginTop: 10,
+        marginRight: regWidth * 10,
+        marginTop: regHeight * 10,
         fontWeight: 'bold',
     },
     odokimage: {
-        width: 300,
-        height: 300,
-        borderRadius: 20,
+        width: regWidth * 300,
+        height: regWidth * 300,
+        borderRadius: regWidth * 20,
     },
     linear: {
         flex: 1,
-        borderRadius: 10,
+        borderRadius: regWidth * 10,
         flexDirection: 'column',
     },
     overlay_linear: {
         flex: 1,
-        borderRadius: 10,
+        borderRadius: regWidth * 10,
         flexDirection: 'column',
     },
     overlay_title: {
-        fontSize: 20, 
-        marginLeft: 20, 
-        marginTop: 35, 
+        fontSize: regWidth * 20, 
+        marginLeft: regWidth * 20, 
+        marginTop: regWidth * 35, 
         color: "white",
     },
     overlay_author: {
-        fontSize: 12, 
-        marginLeft: 20, 
-        marginTop: 5, 
+        fontSize: regWidth * 12, 
+        marginLeft: regWidth * 20, 
+        marginTop: regHeight * 5, 
         color: "white",
     },
     overlay_read_pages: {
-        fontSize: 20, 
-        marginTop: 175,
+        fontSize: regWidth * 20, 
+        marginTop: regHeight * 128,
         color: "#696969",
         fontWeight: 'bold',
     },
     overlay_time: {
-        fontSize: 20, 
-        marginTop: 175, 
+        fontSize: regWidth * 20, 
+        marginTop: regHeight * 128, 
         color: "#696969",
         fontWeight: 'bold',
     },

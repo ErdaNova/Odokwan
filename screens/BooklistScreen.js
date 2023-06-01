@@ -2,13 +2,13 @@ import { Text, View, ScrollView, StyleSheet, FlatList, TouchableHighlight, Image
 import { React, useEffect, useState } from "react";
 // import {Icon} from "@rneui/themed"
 import { Button, Alert } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons'
 import { useQuery } from "../App";
 import { Book } from "../App";
 import { SearchBar } from '@rneui/themed';
 import { useRealm } from "../App";
-import Icon from 'react-native-vector-icons/Ionicons';
+// import Icon from 'react-native-vector-icons/Ionicons';
 import {colors, regWidth, regHeight} from '../config/globalStyles';
+import { Icon } from "@rneui/themed";
 
 // type BookData = {
 //     title: String;
@@ -61,20 +61,32 @@ const BooklistScreen = ({navigation}) => {
         <TouchableOpacity onPress={onPress} style = {[styles.book, {backgroundColor}]} activeOpacity={0.7} >
         <View style={styles.bookcontainer}>
             <View style = {{flexDirection:"column"}}>
+            <Pressable
+                title="delete"
+                onPress={() => deleteBook(item)}
+                style={{
+                    alignItems: "flex-start",
+                    marginHorizontal: regWidth * 12,
+                    marginBottom: regWidth * 8,
+                }}
+            >
+                <Icon 
+                    name='close'
+                    type='antdesign'
+                    size={regWidth * 18}
+                />
+            </Pressable>
             <Image 
                 style={styles.bookimage}
                 source={{uri : item.image}}
             />
-            <Button
-                title="delete"
-                onPress={() => deleteBook(item)}
-            />
+
             </View>
-            <View style={{flex: 0.1}}/>
+            {/* <View style={{flex: 0.1}}/> */}
             <View style={styles.titlecontainer}>
                 <View style={{alignSelf: "flex-end"}}>{status_icon(item.status)}
                 </View>
-                <Text style={[styles.title, {color: textColor}]}>{item.title}</Text>
+                <Text style={[styles.title, {color: textColor, fontSize: regWidth * 13,}]}>{item.title}</Text>
                 <Text style={[styles.title, {color: textColor}]}>{item.author}</Text>
             </View>
         </View>
@@ -130,7 +142,7 @@ const BooklistScreen = ({navigation}) => {
                     data={searchInput ? filtered : books}
                     renderItem={renderItem}
                 />
-                <View style={{height:100}}></View>
+                <View style={{height: regHeight * 100}}></View>
 
         </View>
         </View>

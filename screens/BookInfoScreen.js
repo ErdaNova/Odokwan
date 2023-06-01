@@ -1,16 +1,12 @@
 //import * as React from 'react';
 import React, { useState } from 'react';
-import { Button, View , Image, Text } from 'react-native';
+import { Button, View , Image, Text, KeyboardAvoidingView } from 'react-native';
 import 'react-native-gesture-handler';
 import { StyleSheet } from 'react-native';
 import { TextInput } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { useRealm } from '../App';
-
-
-
-
-
+import {colors, regWidth, regHeight} from '../config/globalStyles';
 
 
 
@@ -69,12 +65,17 @@ const BookInfoScreen = ({navigation, route}) => {
 
 
     return(
-        <View style={styles.container}>
+        <KeyboardAvoidingView 
+            style={styles.container}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        >
             {image 
-            ? <View style={ styles.bookCover }>
-            <Image source={{uri: image}} style={styles.bookCoverImage}/>
-        </View>
-        :<></>
+                ? 
+                <View style={ styles.bookCover }>
+                    <Image source={{uri: image}} style={styles.bookCoverImage}/>
+                </View>
+                :
+                <></>
 
             }
             
@@ -86,13 +87,13 @@ const BookInfoScreen = ({navigation, route}) => {
             <View>
                 <TextInput placeholder = "title" style = {styles.input} onChangeText={ (text) => setTitle(text) } value = {title}/>
                 <TextInput placeholder = "author" style = {styles.input} onChangeText={(text) => setAuthor(text)} value = {author}/>
-                <TextInput placeholder = "page" style = {styles.input} onChangeText={(text) => setPage(text)} value = {page} keyboardType='numeric' numeric/>
+                <TextInput placeholder = "total page" style = {styles.input} onChangeText={(text) => setPage(text)} value = {page} keyboardType='numeric' numeric/>
             </View>
             <Button
                 title="save"
                 onPress={createBook}
             />
-        </View>
+        </KeyboardAvoidingView>
     );
 }
 
@@ -116,15 +117,15 @@ const styles = StyleSheet.create({
         marginVertical: 30,
     },
     bookCoverImage: {
-        width: 180,
-        height: 240,
-        resizeMode: 'stretch',
+        width: regWidth * 240,
+        height: regWidth * 240,
+        resizeMode: 'contain',
     },
     input: {
-        height: 40, //!!change values
-        width: 200, //!!change values
-        borderWidth: 2,
-        padding: 10,
+        height: regHeight * 40, //!!change values
+        width: regWidth * 200, //!!change values
+        borderWidth: regWidth * 2,
+        padding: regWidth * 10,
     },
 
 })
