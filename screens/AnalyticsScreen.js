@@ -26,28 +26,29 @@ const AnalyticsScreen = () => {
     useEffect(() => {
         let count = 0;
         let bookList = [];
-
-        odoks.map((odok) => {
-            // console.log(odok.read_time);
-            count = count + odok.read_time;
-
-            bookList[odok.book_id] = bookList[odok.book_id] ? bookList[odok.book_id]+1 : 1;
-        })
-        setTotalTime(count);
-
-        let maxIndex = null;
-        bookList.map((bookCount, index) => {
-            console.log(bookCount, bookList[maxIndex]);
-            if (bookCount) {
-                if (!maxIndex) {
-                    maxIndex = index;
-                } else {
-                    maxIndex = bookCount > bookList[maxIndex] ? index : maxIndex;
+        console.log(odoks);
+        if (odoks.length > 0) {
+            odoks.map((odok) => {
+                count = count + odok.read_time;
+    
+                bookList[odok.book_id] = bookList[odok.book_id] ? bookList[odok.book_id]+1 : 1;
+            })
+            setTotalTime(count);
+    
+            let maxIndex = null;
+            bookList.map((bookCount, index) => {
+                console.log(bookCount, bookList[maxIndex]);
+                if (bookCount) {
+                    if (!maxIndex) {
+                        maxIndex = index;
+                    } else {
+                        maxIndex = bookCount > bookList[maxIndex] ? index : maxIndex;
+                    }
                 }
-            }
-        })
-        console.log(maxIndex);
-        setMostBook(books.filtered("_id == $0", maxIndex)[0].title)
+            })
+            console.log(maxIndex);
+            setMostBook(books.filtered("_id == $0", maxIndex)[0].title)
+        }
     }, [])
 
     return(
@@ -55,18 +56,27 @@ const AnalyticsScreen = () => {
             <Text style={styles.txt}>
                 Analytics
             </Text>
-            <Text style={styles.txt}>
-                Your total reading time is
-            </Text>
-            <Text style={{...styles.txt, color: "blue"}}>
-                {hour}h {minute}m {second}s
-            </Text>
-            <Text style={styles.txt}>
-                The book you read the most is
-            </Text>
-            <Text style={{...styles.txt, color: "blue"}}>
-                {mostBook}
-            </Text>
+            {odoks.length > 0 ? 
+                <>
+                    <Text style={styles.txt}>
+                        Your total reading time is
+                    </Text>
+                    <Text style={{...styles.txt, color: "blue"}}>
+                        {hour}h {minute}m {second}s
+                    </Text>
+                    <Text style={styles.txt}>
+                        The book you read the most is
+                    </Text>
+                    <Text style={{...styles.txt, color: "blue"}}>
+                        {mostBook}
+                    </Text>
+                </>
+                : 
+                <Text style={styles.txt}>
+                    Create your Odoks!
+                </Text>
+            }
+
         </View>
     );
 }
