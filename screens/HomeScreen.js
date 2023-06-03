@@ -28,7 +28,7 @@ const HomeScreen = ({navigation}) => {
     }, []);
 
     const fetchRecentBook = () => {
-        setRecentBook(books.filtered("_id == $0", bookId)[0]);
+        setRecentBook(books.filtered("_id == $0", Number(bookId))[0]);
     }
 
     const wait = (timeout) => {
