@@ -49,22 +49,10 @@ const SearchBookScreen = ({navigation}) => {
 
     return(
         <View style={{flex:1}}>
-            {/* <Text>
-                here is odoktimer page
-            </Text> */}
-            {/* <Button
-            title="go to book info"
-            onPress={() => navigation.navigate("BookInfo")}
-       /> */}
-
-        {/* <Button
-            title="search book"
-            onPress={searchBook}
-       /> */}
        <View style={{height : 90}}>
         <View style = {{ width : "100%", height:"80%"}}>
           <SearchBar
-            placeholder="Type Book title or Author" value = {searchInput} onChangeText={updateSearch} 
+            placeholder="Enter a book title or author name" value = {searchInput} onChangeText={updateSearch} 
             containerStyle ={{backgroundColor:"#000333"}} inputContainerStyle = {{backgroundColor:"#FFFFF0"}}
             />
         </View>
@@ -75,8 +63,8 @@ const SearchBookScreen = ({navigation}) => {
         <FlatList
           data={searchResult}
           renderItem={({item}) => 
-          <View style = {{width:"100%", height: 80, flexDirection : "row", alignContent:"center", justifyContent:"center"}} >
-            <TouchableOpacity style = {{width:"90%", height: "90%", padding : 10, flexDirection : "row", backgroundColor:"#ffffff"}}
+          <View style = {{width:"100%", height: 90, flexDirection : "row", alignContent:"center", justifyContent:"center", marginBottom: 10}} >
+            <TouchableOpacity style = {{width:"90%", height: "90%", padding : 10, flexDirection : "row", backgroundColor:"#ffffff", borderRadius: 10, elevation: 5}}
               onPress={() => navigation.navigate("BookInfo",
               {
                 title: item.title, 
@@ -88,8 +76,8 @@ const SearchBookScreen = ({navigation}) => {
               <Image  style = {{height : 56, width : 40}} source={{uri : item.image}} />
               </View>
               <View>
-                <Text style = {{ width : "80%"}}>{item.title}</Text>
-                <Text>{item.author}</Text>
+                <Text style = {{ width : "70%", marginLeft: 10, fontWeight:'bold'}}>{item.title}</Text>
+                <Text style = {{marginLeft: 10}}>{item.author}</Text>
               </View>
             </TouchableOpacity>
           </View>

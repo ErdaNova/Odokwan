@@ -10,6 +10,8 @@
     "test": "jest"
   },
   "dependencies": {
+    "@coreui/icons": "^3.0.1",
+    "@coreui/icons-react": "^2.1.0",
     "@react-native-camera-roll/camera-roll": "^5.5.0",
     "@react-native-masked-view/masked-view": "^0.2.9",
     "@react-navigation/bottom-tabs": "^6.5.7",
@@ -33,9 +35,9 @@
     "react-native-screens": "^3.20.0",
     "react-native-share": "^8.2.2",
     "react-native-vector-icons": "^9.2.0",
+    "react-native-view-shot": "^3.6.0",
     "react-native-xml2js": "^1.0.3",
-    "realm": "^11.9.0",
-    "react-native-view-shot": "^3.6.0"
+    "realm": "^11.9.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

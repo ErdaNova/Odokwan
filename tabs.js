@@ -20,6 +20,8 @@ import { Button } from 'react-native';
 import * as RootNavigation from "./RootNavigation"
 import { createRealmContext, RealmConfiguration, Builder } from '@realm/react';
 
+import CIcon from '@coreui/icons-react';
+import * as icon from '@coreui/icons';
 
 
 
@@ -118,14 +120,14 @@ const Tabs = () => {
 
     const [isVisible, setIsVisible] = useState(false);
     const list = [
-    { title: 'search with book name' , onPress: () => {setIsVisible(false); RootNavigation.navigate("SearchBook")}},
-    { title: 'search with book barcode', onPress: () => {setIsVisible(false); RootNavigation.navigate("ScanBarcode")} },
-    { title: 'type book information directly', onPress: () => {setIsVisible(false); RootNavigation.navigate("BookInfo", 
+    { title: 'By book title or author', onPress: () => {setIsVisible(false); RootNavigation.navigate("SearchBook")}},
+    { title: 'By barcode', onPress: () => {setIsVisible(false); RootNavigation.navigate("ScanBarcode")} },
+    { title: 'By direct input', onPress: () => {setIsVisible(false); RootNavigation.navigate("BookInfo", 
     {
         title: "", 
         author: "", 
         page_number: 0, 
-        image: "",
+        image: "",  //there should be default empty image
     })}},
     ];
 
@@ -257,11 +259,7 @@ const Tabs = () => {
                 {/* this is the bottom sheet of app */}
                 <BottomSheet modalProps={{}} isVisible={isVisible} onBackdropPress={()=> setIsVisible(false)}>
                     {list.map((l, i) => (
-                    <ListItem
-                        key={i}
-                        containerStyle={l.containerStyle}
-                        onPress={l.onPress}
-                    >
+                    <ListItem key={i} containerStyle={l.containerStyle} onPress={l.onPress}>
                         <ListItem.Content>
                         <ListItem.Title style={l.titleStyle}>{l.title}</ListItem.Title>
                         </ListItem.Content>

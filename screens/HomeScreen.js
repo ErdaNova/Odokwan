@@ -52,6 +52,16 @@ const HomeScreen = ({navigation}) => {
                     />
                 }
             >
+            {/* <Text style={{
+                        fontSize: regWidth * 30,
+                        color: "black",
+                        marginLeft: regWidth * 15,
+                        marginBottom: regHeight * 7,
+                        marginTop: regHeight * 15,
+                }}
+            >
+                Welcome to Odok :)
+            </Text> */}
             <View
                 // onPress={()=>{navigation.navigate("BookDetail", 
                 // {
@@ -72,7 +82,7 @@ const HomeScreen = ({navigation}) => {
                         marginBottom: regHeight * 8,
                     }}
                 >
-                    Recently Read
+                    Recently Read Books
                 </Text>
                 <View style={{ flexDirection: "row", alignItems: "center", }}>
                     {recentBook ? 
@@ -132,11 +142,14 @@ export {HomeScreen};
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        // backgroundColor: "#FFEFDF",  //!!suggestion to use this color or different light color
     },
     recentBookContainter: {
         paddingHorizontal: regWidth * 12,
         marginTop: regHeight * 8,
         // width: "100%"
+        marginBottom: regHeight * 20,
+        marginTop: regHeight * 15,
     },
     bookimage: {
         width: regWidth * 160,
@@ -145,6 +158,7 @@ const styles = StyleSheet.create({
     },
     titleTxt: {
         color: "black",
+        fontWeight: "bold",
         marginVertical: regHeight * 10,
         marginRight: regWidth * 15,
         fontSize: regWidth * 15,

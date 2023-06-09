@@ -326,6 +326,7 @@ const styles = StyleSheet.create({
     odok_gallery_container: {
         flex: 1,
         flexDirection: 'column',
+        backgroundColor: "#FFEFDF",
     },
     title_container: {
         flex: 1,

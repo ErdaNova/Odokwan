@@ -133,7 +133,7 @@ const BooklistScreen = ({navigation}) => {
             <View style={{height : 70}}>
 
             <SearchBar
-                placeholder="Type Book title" value = {searchInput} onChangeText={updateSearch} 
+                placeholder="Enter book title" value = {searchInput} onChangeText={updateSearch} 
                 containerStyle ={{backgroundColor:"#000333"}} inputContainerStyle = {{backgroundColor:"#FFFFF0"}}
                 />
         
@@ -165,6 +165,7 @@ const status_icon = (status) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: "#FFEFDF",
     },
     bookcontainer: {
         flex: 1,
@@ -172,6 +173,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         paddingVertical: regHeight * 12,
         paddingRight: regWidth * 12,
+        
     },
     titlecontainer: {
         flexDirection: "column",
@@ -201,7 +203,6 @@ const styles = StyleSheet.create({
     },
     toolbar_container: {
         height : 60,
-        backgroundColor: 'white',
     },
     toolbar: {
         flexDirection: "row",

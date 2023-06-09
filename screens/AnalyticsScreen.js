@@ -53,9 +53,15 @@ const AnalyticsScreen = () => {
 
     return(
         <View style={styles.container}>
-            <Text style={styles.txt}>
+
+        <Text style={{fontWeight: "bold", fontSize: 30, marginBottom: 20}}>
                 Analytics
-            </Text>
+        </Text>
+            <View style={styles.rectangle}>
+            <View style={styles.userIcon}>
+              {/* You can replace this with your user icon */}
+              <Text>User Icon</Text>
+            </View>
             {odoks.length > 0 ? 
                 <>
                     <Text style={styles.txt}>
@@ -76,6 +82,7 @@ const AnalyticsScreen = () => {
                     Create your Odoks!
                 </Text>
             }
+            </View>
 
         </View>
     );
@@ -86,10 +93,39 @@ export {AnalyticsScreen};
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        marginTop: 20,
     },
     txt: {
         color: "black",
         fontSize: regWidth * 18,
-    }
+        margin: regWidth * 2,
+    },
+    rectangle: {
+        backgroundColor: 'white',
+        width: 300,
+        height: 300,
+        borderRadius: 10,
+        padding: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+      userIcon: {
+        width: 80,
+        height: 80,
+        borderRadius: 40,
+        backgroundColor: '#C0C0C0',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 20,
+      },
+      pagesText: {
+        fontSize: 20,
+        marginBottom: 10,
+      },
+      timeText: {
+        fontSize: 16,
+      },
 
 })
