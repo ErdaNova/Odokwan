@@ -15,7 +15,7 @@ const BookDetailScreen = ({navigation, route}) => {
     const odoks = realm.objects("Odok");
     const book = route.params.book
     // const bookTitle = route.params.title;
-    const importantOdoks = odoks.filtered("title == $0", book.title);
+    const importantOdoks = odoks.filtered("book_id == $0", book._id);
     const [visible, setVisible] = useState(false);
 
     const [selectedOdok, setSelectedOdok] = useState(null);

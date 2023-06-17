@@ -160,8 +160,18 @@ const OdokOverlay = (props) => {
                     </View>
                 </ImageBackground>
             </ViewShot>
-            <View>
-                <Text>
+            <View
+                style={{
+                    backgroundColor: "white",
+                    marginTop: -regHeight * 40,
+                    paddingTop: regHeight * 40,
+                    marginHorizontal: regWidth * 4,
+                    paddingHorizontal: regWidth * 8,
+                    zIndex: -1,
+                    borderRadius: regWidth * 10,
+                }}
+            >
+                <Text style={{ color: "black", fontSize: regWidth * 14, }}>
                     {selectedOdok.memo}
                 </Text>
             </View>
