@@ -37,8 +37,8 @@ const BooklistScreen = ({navigation}) => {
     const odoks = realm.objects("Odok");
 
     const deleteBook = (target) => {
-        const bookTitle = target.title;
-        const importantOdoks = odoks.filtered("title == $0", bookTitle);
+        const bookId = target._id;
+        const importantOdoks = odoks.filtered("book_id == $0", bookId);
 
         Alert.alert("","Do you really want to delete? Odok will be deleted together.", [
             {
