@@ -1,4 +1,4 @@
-import { Text, View, ScrollView, StyleSheet, FlatList, TouchableHighlight, Image, Pressable, TouchableOpacity, TextInput, ImageBackground, Platform, PermissionsAndroid, } from "react-native";
+import { Text, View, ScrollView, StyleSheet, FlatList, TouchableHighlight, Image, Pressable, TouchableOpacity, TextInput, ImageBackground, Platform, PermissionsAndroid, Alert, } from "react-native";
 import { React, useState, useRef, useEffect, } from "react";
 // import {Icon} from "@rneui/themed"
 import { Button } from 'react-native';
@@ -63,6 +63,7 @@ const OdokOverlay = (props) => {
             )
             .then((res) => {
                 console.log("Success", res);
+                Alert.alert("Download successful!")
             })
             .catch((err) => {
                 console.log(err);
